@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <style>
+        .scroll-table-body {
+            height: 200px;
+            overflow-x: auto;
+            border-top: 3px solid;
+            border-bottom: 3px solid;
+            border-left: 3px solid;
+            border-right: 3px solid;
+        }
+        .scroll-table table {
+            width:100%;
+            table-layout: fixed;
+        }
+        th, td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Рады вас видеть, {{username}}!</h1>
+    {% csrf_token %}
+    {% if sheets.count > 0 %}
+        <h3>Список файлов</h3>
+        <div class="scroll-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Название</th>
+                        <th>Ссылка на отображение</th>
+                        <th>Опции</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="scroll-table-body">
+                <table>
+                    <tbody>
+                        {% for sheet in sheets %}
+                        <tr>
+                            <td>{{ sheet.id }}</td>
+                            <td>{{ sheet.name }}</td>
+                            <td>
+                                <a href="{{ sheet.work_link }}" target="_blank">Файл</a>
+                            </td>
+                            <td>
+                                <a href="./edit/{{sheet.id}}">Изменить</a>
+                                |
+                                <a href="./update/{{sheet.id}}">Обновить файл</a>
+                                |
+                                <a href="./remove/{{sheet.id}}">Удалить</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <h3>У вас отсутствуют конвертированные файлы!</h3>
+    {% endif %}
+    <br>
+    <form  method="GET" action="add">
+        <button type="submit">Добавить таблицу</button>
+    </form>
+    <br>
+    <form method="GET" action='../logout'>
+        <button type="submit">Выйти</button>
+    </form>
+    <br>
+    <form method="GET" action='../delete'>
+        <button type="submit">Удалить аккаунт</button>
+    </form>
+</body>
+</html>

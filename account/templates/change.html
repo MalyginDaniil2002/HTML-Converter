@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление/Изменение информации о файле</title>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <div>
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                <div>
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {{ field.label_tag }}
+            <div>
+                {{ field }}
+            </div>
+        {% endfor %}
+        </div>
+        <br>
+        <input type="submit" value="Подтвердить">
+    </form>
+    <br>
+    <form  method="GET" action="../../account">
+        <button type="submit">Назад</button>
+    </form>
+</body>
+</html>
