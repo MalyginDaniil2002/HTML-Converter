@@ -30,12 +30,12 @@ SECRET_KEY = 'django-insecure-zf72=gbz!vg4(gx8q0_f09jb)-9)t5*1q(#l%_9dleq94wua(_
 DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://gamely-masterful-mackerel.cloudpub.ru',
+    'https://html-converter.cloudpub.ru',
 ]
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'gamely-masterful-mackerel.cloudpub.ru',
+    'html-converter.cloudpub.ru',
 ]
 
 

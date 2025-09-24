@@ -26,7 +26,7 @@ def create_html(file_name, excel_name, html_name):
     with open(html_name, 'w') as file:
         file.write(html_output)
     os.remove(excel_name)
-    return f'https://gamely-masterful-mackerel.cloudpub.ru/show/{file_name}.html'
+    return f'{settings.CSRF_TRUSTED_ORIGINS[0]}/show/{file_name}.html'
 
 def create_file(sheet_id, source_link):
     work_link = ""

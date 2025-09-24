@@ -58,12 +58,15 @@ def add(request):
 
 @login_required
 def update(request, sheet_id):
-    source_link = Sheet.objects.get(id=sheet_id).source_link
-    _ = create_file(sheet_id, source_link)
+    if Sheet.objects.filter(id=sheet_id, user=request.user.id).exists():
+        source_link = Sheet.objects.get(id=sheet_id).source_link
+        _ = create_file(sheet_id, source_link)
     return HttpResponseRedirect("..")
 
 @login_required
 def edit(request, sheet_id):
+    if not Sheet.objects.filter(id=sheet_id, user=request.user.id).exists():
+        return HttpResponseRedirect("..")
     if request.method == "POST":
         editform = EditForm(request.POST)
         if not editform.is_valid():
@@ -78,12 +81,18 @@ def edit(request, sheet_id):
 
 @login_required
 def remove(request, sheet_id):
-    sheet = Sheet.objects.get(id=sheet_id)
-    remove_file(sheet_id)
-    sheet.delete()
+    if Sheet.objects.filter(id=sheet_id, user=request.user.id).exists():
+        remove_file(sheet_id)
+        Sheet.objects.get(id=sheet_id).delete()
     return HttpResponseRedirect("..")
 
 @login_required
 def delete(request):
-    print("DELETE!")
-    return HttpResponseRedirect("logout")
+    user_id = request.user.id
+    if Sheet.objects.filter(user=user_id).exists():
+        sheets = Sheet.objects.filter(user=user_id)
+        for sheet in sheets:
+            remove_file(sheet.id)
+        sheets.delete()
+        User.objects.get(id=user_id).delete()
+    return HttpResponseRedirect("../logout")
